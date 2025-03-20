@@ -1,17 +1,12 @@
 <nav>
     <div class="mr-auto">
-        <!-- right -->
-
         <a href="/" class="!text-black hover:!opacity-100 font-bold h-16 leading-16 text-lg">StudentHub</a>
     </div>
 
-    <div>
-        <!-- centre -->
-    </div>
+    <div></div>
 
     <div class="ml-auto">
         <a href="/auth/signin" class="leading-16">Sign in</a>
-        <!-- left -->
     </div>
 </nav>
 
