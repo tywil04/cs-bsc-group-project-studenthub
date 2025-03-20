@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+html,
+body {
+    @apply h-full bg-gray-50;
+}
+
+* {
+    @apply box-content;
+}
+
+.form-input {
+    @apply focus:outline-blue-500 bg-neutral-200/25 border border-neutral-200/75 rounded-md px-2.5 py-1.5;
+}
+
+.form-label {
+    @apply text-sm text-neutral-800;
+}
+
+.form-warning {
+    @apply text-sm text-red-500;
+}
+
+a {
+    @apply text-blue-500 hover:opacity-75 duration-75;
+}
+
+button {
+    @apply hover:opacity-75 duration-75 cursor-pointer px-3 p-2 rounded-md;
+}
