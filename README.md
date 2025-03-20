@@ -1,38 +1,15 @@
-# sv
+# StudentHub
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Steps to start developing
+- Install MySQL Server and get it running, make sure you setup a user and password
+- Install NodeJS and NPM
+- Install and configure Git
+- Clone this repository using `git clone https://github.com/KieranBrooks/Group-Project-CSY2088`
+- Create .env file in studenthub folder and put `DATABASE_URL="mysql://USERNAME:PASSWORD!@localhost:3306/studenthub"` in it. Replace `USERNAME` with your mysql username and replace `PASSWORD` with your mysql password.
+- Run `npm install`
+- Run `npx prisma migrate reset` and when asked if you sure say `Y`
+- You can now start developing. To start a development server run `npm run dev`. Any changes to code will hot reload.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Things to read
+- https://svelte.dev/docs/kit/introduction
+- https://www.prisma.io/docs/orm/overview/introduction
