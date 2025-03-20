@@ -53,6 +53,6 @@ export const actions = {
             path: "/",
         })
 
-        return redirect(307, "/admin/app");
+        return redirect(307, "/staff/app");
     }
 }

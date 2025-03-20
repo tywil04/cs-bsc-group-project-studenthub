@@ -6,7 +6,7 @@
     <div class="mr-auto">
         <!-- right -->
 
-        <p class="font-bold h-16 leading-16 text-lg">StudentHub Admin</p>
+        <p class="font-bold h-16 leading-16 text-lg">StudentHub Staff</p>
     </div>
 
     <div>
