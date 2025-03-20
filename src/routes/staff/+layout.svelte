@@ -2,11 +2,11 @@
     let { children } = $props();
 </script>
 
-<nav class="bg-neutral-100 border-b border-neutral-200/75 w-auto h-[64px] flex flex-row px-4">
+<nav>
     <div class="mr-auto">
         <!-- right -->
 
-        <p class="font-bold h-16 leading-16 text-lg">StudentHub Staff</p>
+        <a href="/staff/app" class="!text-black hover:!opacity-100 font-bold h-16 leading-16 text-lg">StudentHub</a>
     </div>
 
     <div>
@@ -18,6 +18,6 @@
     </div>
 </nav>
 
-<main class="h-[calc(100%_-_64px)] overflow-auto">
+<main>
     {@render children()}
 </main>

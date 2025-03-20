@@ -6,7 +6,7 @@
     <div class="mr-auto">
         <!-- right -->
 
-        <p class="font-bold h-16 leading-16 text-lg">StudentHub</p>
+        <a href="/app" class="!text-black hover:!opacity-100 font-bold h-16 leading-16 text-lg">StudentHub</a>
     </div>
 
     <div>
@@ -18,6 +18,6 @@
     </div>
 </nav>
 
-<main class="h-[calc(100%_-_64px)] overflow-auto">
+<main class="h-[calc(100%_-_65px)] overflow-auto">
     {@render children()}
 </main>

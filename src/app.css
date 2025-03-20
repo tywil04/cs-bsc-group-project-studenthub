@@ -21,10 +21,22 @@ body {
     @apply text-sm text-red-500;
 }
 
+.shadow {
+    @apply shadow-[0_0_1px_rgba(149,157,165,0.1)];
+}
+
 a {
     @apply text-blue-500 hover:opacity-75 duration-75;
 }
 
 button {
     @apply hover:opacity-75 duration-75 cursor-pointer px-3 p-2 rounded-md;
+}
+
+nav {
+    @apply bg-neutral-100 border-b border-neutral-200/75 w-auto h-[64px] flex flex-row px-4 shadow-[0_0_1px_rgba(149,157,165,0.1)];
+}
+
+main {
+    @apply h-[calc(100%_-_65px)] overflow-auto;
 }

@@ -6,7 +6,7 @@
 
 <div class="flex flex-row justify-center py-10 px-5">
     <div class="flex flex-col justify-center w-full">
-        <form use:enhance method="POST" class="max-w-full w-full md:max-w-[75%] md:w-[75%] lg:max-w-[55%] lg:w-[55%] xl:max-w-[35%] xl:w-[35%] mb-auto mx-auto mt-6 grid grid-cols-2 p-8 gap-4 bg-neutral-100/75 border border-neutral-200/75 rounded-xl">
+        <form use:enhance method="POST" class="shadow max-w-full w-full md:max-w-[75%] md:w-[75%] lg:max-w-[55%] lg:w-[55%] xl:max-w-[35%] xl:w-[35%] mb-auto mx-auto mt-6 grid grid-cols-2 p-8 gap-4 bg-neutral-100/75 border border-neutral-200/75 rounded-xl">
             <h1 class="col-span-2 text-2xl font-bold">Sign Up</h1>
 
             <p class="col-span-2 mb-6">To sign up for StudentHub fill in the form below!</p>
