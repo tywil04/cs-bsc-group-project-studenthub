@@ -1,0 +1,237 @@
+//
+// Notes:
+//
+// Users will need to be verified as students. We will send a email to their student email address to verify them.
+//
+// For the University table we will need to seed the database with all UK Universities. 
+// Heres the list from WikiPedia: https://en.wikipedia.org/wiki/List_of_universities_in_the_United_Kingdom
+//
+// I have made it so users can have many courses and each course has a university. 
+// The users current course will be the first course with a status of active (only one course can have an active status at once). 
+// This means to get the users current university you get their current course, and get that courses University.
+//
+// For the UserRelation table, user1 is the person who started the relationship (followed or blocked) and user2 is the target.
+//
+// When someone posts, it will be be marked as "unreviewed" by default (this will also be shown to anyone who views the post) 
+// Admins will later review the post and either mark it as "allowed" or "blocked". 
+// Blocked posts will never be visible to anyone.
+// Allowed posts will be visible to everyone without having the "unreviewed" notice. Allowed posts cannot be reported.
+// Reports make the post get reviewed quicker.
+//
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String            @id @unique @default(cuid())
+  username          String            @unique
+  email             String            @unique
+  studentEmail      String            @unique
+  firstName         String
+  lastName          String
+  password          String
+  studentStatus     UserStudentStatus @default(unverified)
+  courses           Course[]
+  posts             Post[]
+  comments          Comment[]
+  reports           Report[]
+  tags              UserTag[]
+  relations         UserRelation[]    @relation("user1")
+  incomingRelations UserRelation[]    @relation("user2")
+}
+
+model University {
+  id      String   @id @unique @default(cuid())
+  name    String
+  domain  String   @unique // domain of universitys website
+  courses Course[]
+}
+
+model Course {
+  id           String       @id @unique @default(cuid())
+  name         String
+  level        CourseLevel
+  startDate    DateTime
+  endDate      DateTime
+  status       CourseStatus
+  university   University   @relation(fields: [universityId], references: [id])
+  universityId String
+  user         User         @relation(fields: [userId], references: [id])
+  userId       String
+}
+
+model Post {
+  id       String     @id @unique @default(cuid())
+  title    String     @unique
+  content  String
+  author   User       @relation(fields: [authorId], references: [id])
+  authorId String
+  postedAt DateTime   @default(now())
+  images   Image[]
+  comments Comment[]
+  tags     PostTag[]
+  reports  Report[]
+  status   PostStatus @default(unreviewed)
+}
+
+model Image {
+  id       String @id @unique @default(cuid())
+  image    Bytes
+  mimeType String
+  post     Post   @relation(fields: [postId], references: [id])
+  postId   String
+}
+
+model Comment {
+  id       String @id @unique @default(cuid())
+  content  String
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+  post     Post   @relation(fields: [postId], references: [id])
+  postId   String
+}
+
+model Tag {
+  id    String    @id @unique @default(cuid())
+  name  String    @unique
+  posts PostTag[]
+  users UserTag[]
+}
+
+model Report {
+  id     String     @id @unique @default(cuid())
+  type   ReportType
+  post   Post       @relation(fields: [postId], references: [id])
+  postId String
+  user   User       @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model PostTag {
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+  tag    Tag    @relation(fields: [tagId], references: [id])
+  tagId  String
+
+  @@id(name: "id", fields: [postId, tagId]) // combined primary key
+}
+
+model UserRelation {
+  user1   User             @relation("user1", fields: [user1Id], references: [id])
+  user1Id String
+  user2   User             @relation("user2", fields: [user2Id], references: [id])
+  user2Id String
+  type    UserRelationType
+
+  @@id(name: "id", fields: [user1Id, user2Id]) // combined primary key
+}
+
+model UserTag {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  tag    Tag    @relation(fields: [tagId], references: [id])
+  tagId  String
+
+  @@id(name: "id", fields: [userId, tagId]) // combined primary key
+}
+
+model Staff {
+  id                String             @id @unique @default(cuid())
+  username          String             @unique
+  name              String
+  password          String
+  role              StaffRole
+  announcements     Announcement[]
+  accomodationPosts AccomodationPost[]
+  jobPosts          JobPost[]
+  dealPosts         DealPost[]
+}
+
+model Announcement {
+  id       String   @id @unique @default(cuid())
+  title    String   @unique
+  content  String
+  author   Staff    @relation(fields: [authorId], references: [id])
+  authorId String
+  postedAt DateTime @default(now())
+}
+
+model AccomodationPost {
+  id                    String   @id @unique @default(cuid())
+  shortDescription      String
+  description           String
+  location              String
+  pricePerWeekPerPerson String
+  url                   String
+  author                Staff    @relation(fields: [authorId], references: [id])
+  authorId              String
+  postedAt              DateTime @default(now())
+}
+
+model JobPost {
+  id               String   @id @unique @default(cuid())
+  shortDescription String
+  description      String
+  location         String
+  hourlyPay        String
+  url              String
+  author           Staff    @relation(fields: [authorId], references: [id])
+  authorId         String
+  postedAt         DateTime @default(now())
+}
+
+model DealPost {
+  id       String   @id @unique @default(cuid())
+  offer    String
+  url      String
+  author   Staff    @relation(fields: [authorId], references: [id])
+  authorId String
+  postedAt DateTime @default(now())
+}
+
+enum UserStudentStatus {
+  unverified
+  verified
+}
+
+enum UserRelationType {
+  followed
+  blocked
+}
+
+enum CourseLevel {
+  undergraduate
+  postgraduate
+  graduate
+}
+
+enum CourseStatus {
+  active
+  finished // this is pass or fail or dropout
+}
+
+enum PostStatus {
+  unreviewed
+  allowed
+  blocked
+}
+
+enum ReportType {
+  spam
+  harassment
+  impersonation
+  inappropriateContent
+  misinformation
+}
+
+enum StaffRole {
+  moderator // moderates user posts
+  editor // writes accomodation, jobs, announcements or student deal posts
+  admin // can do anything on the backend and can add other staff
+}
