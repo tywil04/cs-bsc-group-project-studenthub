@@ -17,6 +17,7 @@
 - When on your feature branch, commit changes using `git commit -m "my message quickly sumarising what these changes result in"`
 - When you want to push your feature branch run `git push origin new-feature` where `new-feature` is the branch name you selected. 
 - Create a pull request on GitHub for your feature into development branch. I (Tyler) will review it and merge it if its all good.
+- Never delete the main branch or development branch. If you are finished with `new-feature` branch you can delete it.
 
 ## Things to read
 - https://svelte.dev/docs/kit/introduction
