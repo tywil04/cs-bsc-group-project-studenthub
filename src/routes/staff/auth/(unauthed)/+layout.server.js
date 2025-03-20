@@ -18,6 +18,6 @@ export const load = async (event) => {
     } catch {}
 
     if (session?.staff) {
-        throw redirect(307, "/admin/app")
+        throw redirect(307, "/staff/app")
     }
 }

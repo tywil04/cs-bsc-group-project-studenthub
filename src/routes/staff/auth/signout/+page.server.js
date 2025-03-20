@@ -13,5 +13,5 @@ export const load = async (event) => {
         })
     } catch {}
 
-    throw redirect(307, "/admin/auth/signin")
+    throw redirect(307, "/staff/auth/signin")
 }
