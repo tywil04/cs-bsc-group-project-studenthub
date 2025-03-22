@@ -10,14 +10,8 @@ export const actions = {
         const username = data.get("username")
         const password = data.get("password").trim();
 
-        let user = null
-        try {
-            user = await prisma.user.findUnique({
-                where: {
-                    username,
-                }
-            })
-        } catch (error) {
+        const user = await prisma.user.findUnique({ where: { username } });
+        if (user == null) {
             return fail(400, { 
                 success: false, 
                 errors: { 
@@ -51,6 +45,6 @@ export const actions = {
             path: "/",
         })
 
-        return redirect(307, "/app");
+        return redirect(307, "/feed");
     }
 }

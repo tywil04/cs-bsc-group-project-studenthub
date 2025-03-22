@@ -7,7 +7,7 @@
 - Clone this repository using `git clone https://github.com/KieranBrooks/Group-Project-CSY2088`
 - Create .env file in studenthub folder and put `DATABASE_URL="mysql://USERNAME:PASSWORD!@localhost:3306/studenthub"` in it. Replace `USERNAME` with your mysql username and replace `PASSWORD` with your mysql password.
 - Run `npm install`
-- Run `npx prisma migrate reset` and when asked if you sure say `Y`
+- Run `npx prisma generate` and when asked if you sure say `Y`
 - Set Git remote origin using command `git remote add origin https://github.com/KieranBrooks/Group-Project-CSY2088`
 - You can now start developing. To start a development server run `npm run dev`. Any changes to code will hot reload.
 
@@ -22,3 +22,4 @@
 ## Things to read
 - https://svelte.dev/docs/kit/introduction
 - https://www.prisma.io/docs/orm/overview/introduction
+- https://tailwindcss.com/docs/styling-with-utility-classes

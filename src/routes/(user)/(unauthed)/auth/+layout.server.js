@@ -1,5 +1,5 @@
 import { redirect } from "@sveltejs/kit";
-import prisma from "$lib/server/prisma.js"
+import prisma from "$lib/server/prisma";
 import { SessionType } from "@prisma/client";
 
 export const load = async (event) => {
@@ -18,6 +18,6 @@ export const load = async (event) => {
     } catch {}
 
     if (session?.user) {
-        throw redirect(307, "/app")
+        throw redirect(307, "/feed")
     }
 }

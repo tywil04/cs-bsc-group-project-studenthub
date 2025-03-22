@@ -8,17 +8,11 @@ export const actions = {
     default: async ({ cookies, request }) => {
         const data = await request.formData();
 
-        const username = data.get("username")
-        const password = data.get("password").trim();
+        const username = data.get("username").trim();
+        const password = data.get("password");
 
-        let staff = null
-        try {
-            staff = await prisma.staff.findUnique({
-                where: {
-                    username,
-                }
-            })
-        } catch (error) {
+        const staff = await prisma.staff.findUnique({ where: { username } })
+        if (staff == null) {
             return fail(400, { 
                 success: false, 
                 errors: { 
@@ -53,6 +47,6 @@ export const actions = {
             path: "/",
         })
 
-        return redirect(307, "/staff/app");
+        return redirect(307, "/staff/dashboard");
     }
 }
