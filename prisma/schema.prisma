@@ -46,6 +46,17 @@ model User {
   relations         UserRelation[]    @relation("user1")
   incomingRelations UserRelation[]    @relation("user2")
   sessions          Session[]
+  emailChallenges   EmailChallenge[]
+}
+
+model EmailChallenge {
+  id      String               @id @unique @default(cuid())
+  user    User                 @relation(fields: [userId], references: [id])
+  userId  String 
+  code    String
+  status  EmailChallengeStatus @default(incomplete)
+  expires DateTime             @default(now())
+  type    EmailChallengeType
 }
 
 model Session {
@@ -258,4 +269,15 @@ enum StaffRole {
 enum SessionType {
   user
   staff
+}
+
+enum EmailChallengeStatus {
+  incomplete
+  successful
+  failed
+}
+
+enum EmailChallengeType {
+  email
+  studentEmail
 }

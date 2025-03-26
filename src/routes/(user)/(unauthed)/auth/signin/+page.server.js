@@ -2,6 +2,7 @@ import { fail, redirect } from "@sveltejs/kit";
 import { verify } from "argon2";
 import prisma from "$lib/server/prisma";
 import crypto from "node:crypto"
+import { UserEmailStatus, UserStudentStatus } from "@prisma/client";
 
 export const actions = {
     default: async ({ cookies, request }) => {
@@ -45,6 +46,14 @@ export const actions = {
             path: "/",
         })
 
-        return redirect(307, "/feed");
+        if (user.emailStatus == UserEmailStatus.unverified) {
+            return redirect(307, "/auth/challenge/email");
+        }
+
+        if (user.studentStatus == UserStudentStatus.unverified) {
+            return redirect(307, "/auth/challenge/studentEmail");
+        }
+
+        return redirect(307, "/home");
     }
 }

@@ -64,7 +64,7 @@ export const actions = {
             hashLength: 32, // 32 bytes/256 bit
         });
 
-        await prisma.user.create({
+        const user = await prisma.user.create({
             data: {
                 firstName,
                 lastName,
@@ -75,6 +75,21 @@ export const actions = {
             },
         });
 
-        return redirect(307, "/auth/signin");
+        const sessionToken = crypto.randomBytes(32).toString("hex");
+        const session = await prisma.session.create({
+            data: {
+                token: sessionToken,
+                userId: user.id,
+            }
+        })
+
+        cookies.set("session-token", sessionToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 2592000000, // 30 days in ms
+            path: "/",
+        })
+
+        return redirect(307, "/auth/challenge/email");
     }
 }
