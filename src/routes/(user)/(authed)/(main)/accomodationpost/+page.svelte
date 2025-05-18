@@ -5,15 +5,15 @@
 </script>
 
 <svelte:head>
-    <title>Accomodation Posts | StudentHub</title>
+    <title>Accommodation Posts | StudentHub</title>
 </svelte:head>
 
 <div class="flex flex-col gap-7">
-    <h1 class="font-bold text-2xl -mb-5">Accomodation Posts</h1>
+    <h1 class="font-bold text-2xl -mb-5">Accommodation Posts</h1>
 
     <div class="flex flex-col gap-7">
         {#if data.accomodationPosts.length === 0}
-            No accomodation posts
+            No accommodation posts
         {:else}
             {#each data.accomodationPosts as accomodationPost}
                 <AccomodationPost {accomodationPost}/>

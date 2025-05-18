@@ -28,7 +28,7 @@
 
         <a href="/staff/announcement" class:nav-link-selected={$page.url.pathname.startsWith(`/staff/announcement`)} class="nav-link">Announcements</a>
 
-        <a href="/staff/accomodationpost" class:nav-link-selected={$page.url.pathname.startsWith(`/staff/accomodationpost`)} class="nav-link">Accomodation Posts</a>
+        <a href="/staff/accomodationpost" class:nav-link-selected={$page.url.pathname.startsWith(`/staff/accomodationpost`)} class="nav-link">Accommodation Posts</a>
 
         <a href="/staff/jobpost" class:nav-link-selected={$page.url.pathname.startsWith(`/staff/jobpost`)} class="nav-link">Job Posts</a>
 

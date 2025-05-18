@@ -24,7 +24,7 @@
 
         <a href="/announcement" class:nav-link-selected={$page.url.pathname.startsWith(`/announcement`)} class="nav-link">Announcements</a>
 
-        <a href="/accomodationpost" class:nav-link-selected={$page.url.pathname.startsWith(`/accomodationpost`)} class="nav-link">Accomodation Posts</a>
+        <a href="/accomodationpost" class:nav-link-selected={$page.url.pathname.startsWith(`/accomodationpost`)} class="nav-link">Accommodation Posts</a>
 
         <a href="/jobpost" class:nav-link-selected={$page.url.pathname.startsWith(`/jobpost`)} class="nav-link">Job Posts</a>
 
