@@ -43,7 +43,7 @@ export const load = async (event) => {
 }
 
 export const actions = {
-    default: async (event) => {
+    verify: async (event) => {
         const data = await event.request.formData();
 
         const code = data.get("code").trim();
@@ -85,5 +85,29 @@ export const actions = {
         })
 
         return redirect(307, "/auth/challenge/studentEmail");
+    },
+
+    resendEmail: async (event) => {
+        const emailChallenge = await prisma.emailChallenge.findFirst({
+            where: {
+                userId: event.locals.currentUser.id,
+                expires: {
+                    gt: new Date(Date.now()), // find records where expires is greater than the current time, which means not expired
+                },
+                type: EmailChallengeType.email,
+                status: EmailChallengeStatus.incomplete,
+            },
+        });
+
+        await prisma.emailChallenge.update({
+            where: {
+                id: emailChallenge.id,
+            },
+            data: {
+                status: EmailChallengeStatus.failed,
+            }
+        });
+
+        return redirect(307, "/auth/challenge/email");
     }
 }

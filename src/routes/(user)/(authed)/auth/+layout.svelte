@@ -9,9 +9,7 @@
 
     <div></div>
 
-    <div class="ml-auto">
-        <a href="/auth/signout" class="leading-16">Sign out</a>
-    </div>
+    <div class="ml-auto"></div>
 </nav>
 
 <main class="h-[calc(100%_-_65px)] overflow-auto">

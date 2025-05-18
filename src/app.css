@@ -13,32 +13,60 @@ body {
     @apply focus:outline-blue-500 bg-neutral-200/25 border border-neutral-200/75 rounded-md px-2.5 py-1.5;
 }
 
+.form-input[type=file]::file-selector-button {
+    @apply hidden;
+}
+
 .form-label {
-    @apply text-sm text-neutral-800;
+    @apply text-sm text-neutral-800 truncate;
 }
 
 .form-warning {
-    @apply text-sm text-red-500;
+    @apply text-sm text-red-500 truncate;
 }
 
-.shadow {
-    @apply shadow-[0_0_1px_rgba(149,157,165,0.1)];
+.form-description {
+    @apply text-sm text-gray-500 truncate;
+}
+
+.tag {
+    @apply bg-blue-100/75 border border-blue-200/75 text-blue-800 rounded-full text-xs px-2 py-[1px];
+}
+
+.tag.tag-removeable {
+    @apply hover:!bg-red-200/75 hover:!border-red-300/75 hover:!text-red-800;
 }
 
 a {
     @apply text-blue-500 hover:opacity-75 duration-75;
 }
 
-button {
-    @apply hover:opacity-75 duration-75 cursor-pointer px-3 p-2 rounded-md;
+button, a.button {
+    @apply text-sm hover:opacity-75 duration-75 cursor-pointer px-3 p-2 rounded-md block;
+}
+
+button:disabled {
+    @apply opacity-50 cursor-auto;
 }
 
 nav {
     @apply bg-neutral-100 border-b border-neutral-200/75 w-auto h-[64px] flex flex-row px-4 shadow-[0_0_1px_rgba(149,157,165,0.1)];
 }
 
+aside .nav-link {
+    @apply px-2 py-1 rounded-md !text-black border border-transparent hover:opacity-75 duration-75
+}
+
+aside .nav-link.nav-link-selected {
+    @apply bg-neutral-100 border-neutral-200/75;
+}
+
 main {
     @apply h-[calc(100%_-_65px)] overflow-auto;
+}
+
+dialog:not(:open) {
+    @apply hidden;
 }
 
 .bg-gradient {
@@ -51,6 +79,7 @@ main {
         radial-gradient(at 19% 22%, hsla(74,73%,63%,1) 0px, transparent 50%),
         radial-gradient(at 72% 37%, hsla(340,69%,74%,1) 0px, transparent 50%),
         radial-gradient(at 21% 75%, hsla(253,77%,70%,1) 0px, transparent 50%);
+    min-height: 100%;
 }
 
 .bg-gradient-alt {
@@ -63,4 +92,5 @@ main {
         radial-gradient(at 38% 34%, hsla(123,83%,72%,1) 0px, transparent 50%),
         radial-gradient(at 12% 24%, hsla(300,86%,73%,1) 0px, transparent 50%),
         radial-gradient(at 88% 11%, hsla(147,60%,68%,1) 0px, transparent 50%);
+    min-height: 100%;
 }

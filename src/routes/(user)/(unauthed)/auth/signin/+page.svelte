@@ -4,8 +4,12 @@
     let { form } = $props();
 </script>
 
-<div class="bg-gradient flex h-full flex-row justify-center px-5">
-    <form use:enhance method="POST" class="max-w-full w-full md:max-w-[75%] md:w-[75%] lg:max-w-[55%] lg:w-[55%] xl:max-w-[35%] xl:w-[35%] 2xl:max-w-[25%] 2xl:w-[25%] mb-auto grid grid-cols-2 m-auto p-8 gap-4 shadow bg-neutral-100 border border-neutral-200 rounded-xl">
+<svelte:head>
+    <title>Sign In | StudentHub</title>
+</svelte:head>
+
+<div class="bg-gradient flex min-h-full flex-row justify-center">
+    <form use:enhance method="POST" class="max-w-full w-full md:max-w-[55%] md:w-[55%] lg:max-w-[35%] lg:w-[35%] grid grid-cols-2 m-5 md:m-auto p-5 md:p-8 h-fit gap-4 gap-y-5 shadow bg-neutral-100 border border-neutral-200 rounded-xl">
         <h1 class="col-span-2 mb-6 text-2xl font-bold">Sign In</h1>
 
         <div class="col-span-2 flex flex-col">

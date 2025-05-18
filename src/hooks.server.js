@@ -2,7 +2,7 @@ import prisma from "$lib/server/prisma";
 import { SessionType } from "@prisma/client";
 
 export const handle = async ({ event, resolve }) => {
-    const sessionToken = event.cookies.get("session-token");
+    const sessionToken = event?.cookies.get("session-token");
     if (sessionToken != null) {
         const session = await prisma.session.findUnique({
             include: {

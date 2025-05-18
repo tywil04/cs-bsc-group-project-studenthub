@@ -1,24 +1,3 @@
-//
-// Notes:
-//
-// Users will need to be verified as students. We will send a email to their student email address to verify them.
-//
-// For the University table we will need to seed the database with all UK Universities. 
-// Heres the list from WikiPedia: https://en.wikipedia.org/wiki/List_of_universities_in_the_United_Kingdom
-//
-// I have made it so users can have many courses and each course has a university. 
-// The users current course will be the first course with a status of active (only one course can have an active status at once). 
-// This means to get the users current university you get their current course, and get that courses University.
-//
-// For the UserRelation table, user1 is the person who started the relationship (followed or blocked) and user2 is the target.
-//
-// When someone posts, it will be be marked as "unreviewed" by default (this will also be shown to anyone who views the post) 
-// Admins will later review the post and either mark it as "allowed" or "blocked". 
-// Blocked posts will never be visible to anyone.
-// Allowed posts will be visible to everyone without having the "unreviewed" notice. Allowed posts cannot be reported.
-// Reports make the post get reviewed quicker.
-//
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -29,24 +8,27 @@ datasource db {
 }
 
 model User {
-  id                String            @id @unique @default(cuid())
-  username          String            @unique
-  email             String            @unique
-  studentEmail      String            @unique
-  firstName         String
-  lastName          String
-  password          String
-  studentStatus     UserStudentStatus @default(unverified)
-  emailStatus       UserEmailStatus   @default(unverified)
-  courses           Course[]
-  posts             Post[]
-  comments          Comment[]
-  reports           Report[]
-  tags              UserTag[]
-  relations         UserRelation[]    @relation("user1")
-  incomingRelations UserRelation[]    @relation("user2")
-  sessions          Session[]
-  emailChallenges   EmailChallenge[]
+  id                   String            @id @unique @default(cuid())
+  username             String            @unique
+  email                String            @unique
+  studentEmail         String            @unique
+  firstName            String
+  lastName             String
+  password             String
+  studentStatus        UserStudentStatus @default(unverified)
+  emailStatus          UserEmailStatus   @default(unverified)
+  courses              Course[]
+  posts                Post[]
+  comments             Comment[]
+  reports              Report[]
+  relations            UserRelation[]    @relation("user1")
+  incomingRelations    UserRelation[]    @relation("user2")
+  sessions             Session[]
+  emailChallenges      EmailChallenge[]
+  profileAboutMe       String?
+  images               Image[]
+  postReactions        PostReaction[]
+  commentReactions     CommentReaction[]
 }
 
 model EmailChallenge {
@@ -90,41 +72,51 @@ model Course {
 }
 
 model Post {
-  id       String     @id @unique @default(cuid())
-  title    String     @unique
-  content  String
-  author   User       @relation(fields: [authorId], references: [id])
-  authorId String
-  postedAt DateTime   @default(now())
-  images   Image[]
-  comments Comment[]
-  tags     PostTag[]
-  reports  Report[]
-  status   PostStatus @default(unreviewed)
+  id        String     @id @unique @default(cuid())
+  content   String
+  author    User       @relation(fields: [authorId], references: [id])
+  authorId  String
+  postedAt  DateTime   @default(now())
+  images    Image[]
+  comments  Comment[]
+  tags      PostTag[]
+  reports   Report[]
+  status    PostStatus @default(unreviewed)
+  reactions PostReaction[]
 }
 
 model Image {
-  id       String @id @unique @default(cuid())
-  image    Bytes
+  id       String      @id @unique @default(cuid())
+  type     ImageType   @default(post)
+  status   ImageStatus @default(unreviewed)
+  data     Bytes
   mimeType String
-  post     Post   @relation(fields: [postId], references: [id])
-  postId   String
+  post     Post?       @relation(fields: [postId], references: [id])
+  postId   String?
+  user     User?       @relation(fields: [userId], references: [id])
+  userId   String?
+  addedAt  DateTime    @default(now())
 }
 
 model Comment {
-  id       String @id @unique @default(cuid())
-  content  String
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String
-  post     Post   @relation(fields: [postId], references: [id])
-  postId   String
+  id              String      @id @unique @default(cuid())
+  content         String
+  author          User        @relation(fields: [authorId], references: [id])
+  authorId        String
+  post            Post?       @relation(fields: [postId], references: [id])
+  postId          String?
+  parentComment   Comment?    @relation("comment", fields: [parentCommentId], references: [id])
+  parentCommentId String?
+  comments        Comment[]   @relation("comment")
+  type            CommentType @default(post)
+  commentedAt     DateTime    @default(now())
+  reactions       CommentReaction[]
 }
 
 model Tag {
   id    String    @id @unique @default(cuid())
   name  String    @unique
   posts PostTag[]
-  users UserTag[]
 }
 
 model Report {
@@ -145,6 +137,26 @@ model PostTag {
   @@id(name: "id", fields: [postId, tagId]) // combined primary key
 }
 
+model PostReaction {
+  post   Post             @relation(fields: [postId], references: [id])
+  postId String
+  user   User             @relation(fields: [userId], references: [id])
+  userId String
+  type   PostReactionType
+
+  @@id(name: "id", fields: [postId, userId, type]) // combined primary key
+}
+
+model CommentReaction {
+  comment   Comment       @relation(fields: [commentId], references: [id])
+  commentId String
+  user   User             @relation(fields: [userId], references: [id])
+  userId String
+  type   CommentReactionType
+
+  @@id(name: "id", fields: [commentId, userId, type]) // combined primary key
+}
+
 model UserRelation {
   user1   User             @relation("user1", fields: [user1Id], references: [id])
   user1Id String
@@ -155,22 +167,12 @@ model UserRelation {
   @@id(name: "id", fields: [user1Id, user2Id]) // combined primary key
 }
 
-model UserTag {
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-  tag    Tag    @relation(fields: [tagId], references: [id])
-  tagId  String
-
-  @@id(name: "id", fields: [userId, tagId]) // combined primary key
-}
-
 model Staff {
   id                String             @id @unique @default(cuid())
   username          String             @unique
   firstName         String
   lastName          String
   password          String
-  role              StaffRole
   announcements     Announcement[]
   accomodationPosts AccomodationPost[]
   jobPosts          JobPost[]
@@ -188,27 +190,25 @@ model Announcement {
 }
 
 model AccomodationPost {
-  id                    String   @id @unique @default(cuid())
-  shortDescription      String
-  description           String
-  location              String
-  pricePerWeekPerPerson String
-  url                   String
-  author                Staff    @relation(fields: [authorId], references: [id])
-  authorId              String
-  postedAt              DateTime @default(now())
+  id          String   @id @unique @default(cuid())
+  description String
+  location    String
+  price       String
+  url         String
+  author      Staff    @relation(fields: [authorId], references: [id])
+  authorId    String
+  postedAt    DateTime @default(now())
 }
 
 model JobPost {
-  id               String   @id @unique @default(cuid())
-  shortDescription String
-  description      String
-  location         String
-  hourlyPay        String
-  url              String
-  author           Staff    @relation(fields: [authorId], references: [id])
-  authorId         String
-  postedAt         DateTime @default(now())
+  id          String   @id @unique @default(cuid())
+  description String
+  location    String
+  pay         String
+  url         String
+  author      Staff    @relation(fields: [authorId], references: [id])
+  authorId    String
+  postedAt    DateTime @default(now())
 }
 
 model DealPost {
@@ -230,15 +230,29 @@ enum UserEmailStatus {
   verified
 }
 
+enum PostReactionType {
+  liked 
+  disliked
+}
+
+enum CommentReactionType {
+  liked 
+  disliked
+}
+
 enum UserRelationType {
   followed
   blocked
 }
 
+enum CommentType {
+  post 
+  comment
+}
+
 enum CourseLevel {
   undergraduate
   postgraduate
-  graduate
 }
 
 enum CourseStatus {
@@ -252,18 +266,18 @@ enum PostStatus {
   blocked
 }
 
+enum ImageStatus {
+  unreviewed
+  allowed
+  blocked
+}
+
 enum ReportType {
   spam
   harassment
   impersonation
   inappropriateContent
   misinformation
-}
-
-enum StaffRole {
-  moderator // moderates user posts
-  editor // writes accomodation, jobs, announcements or student deal posts
-  admin // can do anything on the backend and can add other staff
 }
 
 enum SessionType {
@@ -280,4 +294,9 @@ enum EmailChallengeStatus {
 enum EmailChallengeType {
   email
   studentEmail
+}
+
+enum ImageType {
+  post
+  profile
 }
