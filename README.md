@@ -1,5 +1,8 @@
 # StudentHub
 
+> [!NOTE]  
+> This is the code for my group project however I was the only person who wrote any code. This code is 100% mine.
+
 ## .env File Options
 - DATABASE_URL
 - SMTP_HOST 
